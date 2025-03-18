@@ -1,45 +1,238 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="utf-8">
-  <meta name="author" content="aleksandr.ru">
-  <title>RusCryptoJS</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/skeleton.css">
-  <link rel="stylesheet" href="css/common.css">
-</head>
-<body>
-  <div class="container">
-    <div class="row top">
-      <div class="one-half column">
-        <h1>RusCryptoJS</h1>
-        <p>JS для Российской криптографии (ГОСТ).</p>
-        <p>
-          <a href="http://aleksandr.ru">aleksandr.ru</a>
-        </p>
-      </div>
-      <div class="one-half column">
-        <p>
-          <a class="button" href="cryptopro.html">Крипто-ПРО</a>
-          <a class="button" href="jacarta.html">JaCarta ГОСТ</a>
-          <a class="button" href="jacarta2.html">JaCarta-2 ГОСТ</a>
-          <a class="button" href="rutoken.html">RuToken ЭЦП</a>
-        </p>
-        <p>
-          <a class="button button-primary" href="https://github.com/Aleksandr-ru/RusCryptoJS">Скачать с GitHub</a>
-          <a class="button" href="https://www.npmjs.com/package/ruscryptojs">npm</a>
-        </p>
-      </div>
-    </div>
-    <div class="bottom">
-      <hr>
-      <p>Поддержка</p>
-      <p>
-        Проекту требуется поддержка для дальнейшего развития, если вы можете чем-то помочь,
-        <a href="https://aleksandr.ru/contacts" target="_blank">свяжитесь со мной</a>.
-      </p>
-    </div>
-  </div>
-</body>
+    <head>
+        <meta charset="utf-8">
+        <meta name="author" content="aleksandr.ru">
+        <title>RusCryptoJS / Крипто-ПРО</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/skeleton.css">
+        <link rel="stylesheet" href="css/common.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>
+                Создание текстового сертификата
+            </h1>
+        </div>
+
+        <hr>
+
+        <div class="container">
+            <p><a href="#Выпуск_сертификата">Выпуск сертификата</a></p>
+            <p><a href="#Электронная_подпись">Электронная подпись</a></p>
+            <p><a href="#Шифрование_данных">Шифрование данных</a></p>
+            
+            <section id="Выпуск_сертификата">
+                <h2>Выпуск сертификата</h2>
+                <p>
+                    Перед началом работы необходимо установить корневой сертификат Крипто.Про по ссылке:
+                    <a href="https://markirovka.ru/knowledge/lekarstva/api-mdlp/instruktsiya-po-ustanovke-kornevykh-sertifikatov">
+                        Установить корневой сертификат Крипто.Про
+                    </a>
+                </p>
+                <p>
+                    Укажите вашу Фамилию, Имя и ваш ИНН физического лица. Нажмите кнопку Создать запрос на сертификат
+                </p>
+                <form id="formCsr">
+                    <div class="row">
+                        <div class="two columns">
+                            <label>Фамилия</label>
+                        </div>
+                        <div class="ten columns">
+                            <input class="u-full-width" type="text" id="lastName" placeholder="Введите вашу фамилию, например Иванов" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="two columns">
+                            <label>Имя</label>
+                        </div>
+                        <div class="ten columns">
+                            <input class="u-full-width" type="text" id="firstName" placeholder="Введите ваше имя, например Иван" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="two columns">
+                            <label>ИНН</label>
+                        </div>
+                        <div class="ten columns">
+                            <input class="u-full-width" type="text" id="inn" placeholder="Введите ваше ИНН" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="two columns">&nbsp;</div>
+                        <div class="ten columns">
+                            <button class="button-primary" type="submit">
+                                Создать запрос на сертификат
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="two columns">
+                            <label>CSR</label>
+                        </div>
+                        <div class="ten columns">
+                            <textarea class="u-full-width" id="csr" readonly placeholder="Здесь будет отображен сгенерированный запрос на сертификат"></textarea>
+                        </div>
+                    </div>
+                </form>
+                <form id="formCert">
+                    <div class="row">
+                        <div class="two columns">
+                            <label>УЦ</label>
+                        </div>
+                        <div class="ten columns">
+                            <p>
+                                Скопируйте текст из поля выше, перейдите на сайт удостоверяющего центра и вставьте
+                                скопированный текст:
+                                <a target="_blank" href="https://www.cryptopro.ru/certsrv/certrqxt.asp">Крипто-ПРО</a>,
+                                нажмите Выдать.
+                            </p>
+                            <p>
+                                На следующей странице обязательно выбираем Base64-шифрование и жмем на ссылку
+                                Загрузить сертификат.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="two columns">
+                            <label>Выберите скачанный файл по ссылке Загрузить сертификат</label>
+                        </div>
+                        <div class="ten columns">
+                            <input type="file" id="certFile" onchange="pasteFile(event)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="two columns">&nbsp;</div>
+                        <div class="ten columns">
+                            <button class="button-primary" type="submit" id="submitCert">
+                                Записать сертификат
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+            
+            <section id="Электронная_подпись">
+                <h2>Электронная подпись</h2>
+                <form id="formSign">
+                    <div class="row">
+                        <div class="two columns">
+                            <label>Сертификат</label>
+                        </div>
+                        <div class="ten columns">
+                            <select class="u-full-width" id="certId" required>
+                                <option value="" selected disabled>Обновите список сертификатов</option>
+                            </select>
+                            <button class="button" type="button" id="refresh">
+                                Обновить список сертификатов
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="two columns">
+                            <label>Cert Info</label>
+                        </div>
+                        <div class="ten columns">
+                            <textarea class="u-full-width" id="certInfo" readonly placeholder="Здесь будет отображена информация о выбранном сертификате"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="two columns">
+                            <label>Данные</label>
+                        </div>
+                        <div class="ten columns">
+                            <input class="u-full-width" type="text" id="data" placeholder="Строка для подписи" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="two columns">&nbsp;</div>
+                        <div class="two columns">
+                            <button class="button-primary" type="submit">
+                                Подписать
+                            </button>
+                        </div>
+                        <div class="eight columns">
+                            <label>
+                                <input type="checkbox" id="attached">
+                                <span class="label-body">Присоединенная подпись</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="two columns">
+                            <label>Подпись</label>
+                        </div>
+                        <div class="ten columns">
+                            <textarea class="u-full-width" id="sign" readonly placeholder="Здесь будет отображена подпись"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <section id="Шифрование_данных">
+                <h2>Шифрование данных</h2>
+                <form id="formEncrypt">
+                    <div class="row">
+                        <div class="two columns">
+                            <label>Сертификат</label>
+                        </div>
+                        <div class="ten columns">
+                            <select class="u-full-width" id="certId2" required>
+                                <option value="" selected disabled>Обновите список сертификатов</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="two columns">
+                            <label>Pin код</label>
+                        </div>
+                        <div class="ten columns">
+                            <input class="u-full-width" type="text" id="pin2" placeholder="Пин-код для дешифрования будет предложено ввести">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="two columns">
+                            <label>Данные</label>
+                        </div>
+                        <div class="ten columns">
+                            <input class="u-full-width" type="text" id="data2" placeholder="Строка для шифрования" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="two columns">&nbsp;</div>
+                        <div class="ten columns">
+                            <button class="button-primary" type="submit">
+                                Зашифровать
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="two columns">
+                            <label>Зашифрованные данные</label>
+                        </div>
+                        <div class="ten columns">
+                            <textarea class="u-full-width" id="encrypted" readonly placeholder="Здесь будет отображены зашифрованные данные"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="two columns">
+                            <label>Расшифрованные данные</label>
+                        </div>
+                        <div class="ten columns">
+                            <input class="u-full-width" type="text" id="decrypted" readonly placeholder="Здесь будет отображены расшифрованные данные">
+                        </div>
+                    </div>
+
+                </form>
+            </section>
+        </div>
+        
+        <script src="js/ruscrypto.min.js"></script>
+        <script src="js/common.js"></script>
+        <script src="js/cryptopro.js"></script>
+    </body>
 </html>

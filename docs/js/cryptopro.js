@@ -29,10 +29,26 @@ function loadCerts() {
 var GlobalCryptoPro;
 
 function requestCSR() {
-    inputCsr.value = inputCert.value = '';
-    inputCert.disabled = true;
+    var lastName = inputLastName.value;
+    var firstName = inputFirstName.value;
     try {
-        var oDn = JSON.parse(inputDN.value);
+        var oDn = {
+            'CN': lastName + ' ' + firstName,
+            '2.5.4.4': lastName,
+            '2.5.4.42': firstName,
+            '2.5.4.12': 'сотрудник',
+            '2.5.4.9': 'ул Верейская, д. 29, стр. 34',
+            '2.5.4.11': 'Отдел',
+            'O': 'ООО "СЕЛСАП"',
+            '2.5.4.7': 'г. Москва', //L localityName нас пункт
+            '2.5.4.8': '77 г. Москва', //S tateOrProvinceName регион
+            'C': 'RU',
+            '1.2.840.113549.1.9.1': 'info@selsup.ru',
+            '1.2.643.3.131.1.1': inputInn.value, //'NUMERICSTRING:000000000076', //ИНН
+            '1.2.643.100.1': '1227700169180', // 'NUMERICSTRING:0000000000024', // ОГРН
+            '1.2.643.100.3': '00000000052', // 'NUMERICSTRING:00000000052' // СНИЛС
+            '1.2.643.100.4': '9731090493'
+        };
     }
     catch(e) {
         console.log('Parse DN', e);
@@ -42,14 +58,13 @@ function requestCSR() {
     GlobalCryptoPro = new window.RusCryptoJS.CryptoPro;
     return GlobalCryptoPro.init().then(info => {
         console.log('Initialized', info);
-        return GlobalCryptoPro.generateCSR(dn, [], { pin: inputPin.value });
+        return GlobalCryptoPro.generateCSR(dn, [], { pin: '' });
     }).then(result => {
         console.log('generateCSR', result);
 
         const csr = result.csr;
         inputCsr.value = csr;
         alert('Выпустите сертификат в УЦ на основе созданного CSR');
-        inputCert.disabled = false;
         inputCsr.focus();
     }).catch(e => {
         alert('Failed! ' + e);
@@ -57,9 +72,8 @@ function requestCSR() {
 };
 
 function requestCertificate() {
-    const cert = inputCert.value;
     if(!GlobalCryptoPro || !cert) {
-        alert('Сначала надо создать CSR');
+        alert('Выберите файл сертификата');
         return false;
     }    
     return GlobalCryptoPro
@@ -70,8 +84,6 @@ function requestCertificate() {
     }).then(info => {
         console.log('Certificate info', info);
         alert('Success!');
-        inputCsr.value = inputCert.value = '';
-        inputCert.disabled = true;
         GlobalCryptoPro = undefined;
         return loadCerts();
     }).catch(e => {

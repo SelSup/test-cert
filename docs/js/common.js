@@ -1,25 +1,12 @@
-var oDn = {
-    'CN': 'Иванов Иван',
-    '2.5.4.4': 'Иванов',
-    '2.5.4.42': 'Иван',
-    '2.5.4.12': 'Директор департамента',
-    '2.5.4.9': 'ул. Ивановская 99',
-    '2.5.4.11': 'Отдел маркетинга',
-    'O': 'ОАО "Серьезные люди"',
-    '2.5.4.7': 'г. Москва', //L localityName нас пункт
-    '2.5.4.8': '77 г. Москва', //S tateOrProvinceName регион
-    'C': 'RU',
-    '1.2.840.113549.1.9.1': 'example@domain.ru',
-    '1.2.643.3.131.1.1': '000000000076', //'NUMERICSTRING:000000000076', //ИНН
-    '1.2.643.100.1': '0000000000024', // 'NUMERICSTRING:0000000000024', // ОГРН
-    '1.2.643.100.3': '00000000052', // 'NUMERICSTRING:00000000052' // СНИЛС
-};
 var inputPin = document.getElementById('pin');
 var inputPin2 = document.getElementById('pin2');
 var inputDescr = document.getElementById('descr');
-var inputDN = document.getElementById('dn');
 var inputCsr = document.getElementById('csr');
-var inputCert = document.getElementById('cert');
+var inputLastName = document.getElementById('lastName');
+var inputFirstName = document.getElementById('firstName');
+var inputInn = document.getElementById('inn');
+var cert;
+var inputFile = document.getElementById('certFile');
 var inputCertInfo = document.getElementById('certInfo');
 var inputCertId = document.getElementById('certId');
 var inputCertId2 = document.getElementById('certId2');
@@ -35,8 +22,6 @@ var formSign = document.getElementById('formSign');
 var formEncrypt = document.getElementById('formEncrypt');
 var buttonRefresh = document.getElementById('refresh');
 var inputAllInfo =  document.getElementById('allinfo');
-
-inputDN.value = JSON.stringify(oDn, null, '\t');
 
 buttonRefresh.addEventListener('click', e => {
     e.preventDefault();
@@ -64,6 +49,16 @@ formSign.addEventListener('submit', e => {
     e.preventDefault();
     signData();
 });
+
+function pasteFile(event) {
+    const file = event.target.files.item(0)
+    file.text().then(
+        (text) => {
+            cert = text.replace('-----BEGIN CERTIFICATE-----', '')
+                .replace('-----END CERTIFICATE-----', '');
+        }
+    )
+}
 
 formEncrypt.addEventListener('submit', e => {
     e.preventDefault();
